@@ -163,7 +163,8 @@ class CatalogListComponent extends CBitrixComponent implements Errorable, Contro
             ];
         }
 
-        $pathway = new Pathway($this->arParams['CATALOG_ROOT'], $this->cursor, $this->selectionCriteria);
+        reset($items);
+        $pathway = new Pathway($this->arParams['CATALOG_ROOT'], $this->cursor, current($items));
 
         $this->arResult = [
             'grid' => [

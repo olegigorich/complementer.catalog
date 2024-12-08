@@ -21,7 +21,9 @@ class DataGenerator
        'usb-разветвитель',
        'влагозащищенный блок-питания',
        'адаптер MegaLink',
-       'золотая черепашка'
+       'золотая черепашка',
+       'push-адаптер для rest-ноутбука',
+       'DRY-салфетки для экрана'
     ];
 
     public static function letter(array $letters): string

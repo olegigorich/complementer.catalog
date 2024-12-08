@@ -20,7 +20,7 @@ Extension::load([
 
 Loc::loadLanguageFile('/local/modules/complementer.catalog/lib/catalogcursor.php');
 
-$APPLICATION->SetTitle(Loc::getMessage('CATALOG_PAGE_TITLE').' \ '. $arResult['instance']['NAME']);
+$APPLICATION->SetTitle(Loc::getMessage('CATALOG_PAGE_TITLE').' \ '. $arResult['productTitle'].' '. $arResult['instance']['NAME']);
 
 Toolbar::deleteFavoriteStar();
 

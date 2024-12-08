@@ -45,7 +45,7 @@ if ($session->has($moduleId)) {
                                     <p>
                                         <input type="checkbox" name="createTables" id="createTables" value="Y" checked onclick="switchCounts();">
                                         <label for="createTables">
-                                            <?= Loc::getMessage("COMPLEMENTER_DELL_AND_CREATE_DB_TABLES") ?>
+                                            <?= Loc::getMessage("COMPLEMENTER_DELETE_AND_CREATE_DB_TABLES") ?>
                                         </label>
                                     </p>
                                     <div id="complementer_counts">
@@ -96,7 +96,7 @@ if ($session->has($moduleId)) {
 
 <script type="text/javascript">
     function switchCounts() {
-        var style = document.getElementById('complementer_counts').style
+        var style = document.getElementById('complementer_counts').style;
         if (style.visibility == "hidden")
             style.visibility = "visible";
         else
