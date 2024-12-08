@@ -27,8 +27,7 @@ final class complementer_catalog extends CModule
         public readonly int $maxCountBrands = 5,
         public readonly int $maxCountModels = 6,
         public readonly int $maxCountProducts = 100
-        )
-    {
+    ) {
         $this->MODULE_ID = 'complementer.catalog';
         $this->MODULE_NAME = Loc::getMessage('COMPLEMENTER_CATALOG_NAME');
         $this->MODULE_DESCRIPTION = Loc::getMessage('COMPLEMENTER_CATALOG_DESCRIPTION');
@@ -100,31 +99,35 @@ final class complementer_catalog extends CModule
      */
     public function doUninstall(): void
     {
-        $this->UnInstallFiles();
-        $this->UnInstallDB();
+        global $APPLICATION;
+        Loader::requireModule($this->MODULE_ID);
+
+        $request = Application::getInstance()->getContext()->getRequest();
+        $step = (int)$request['step'];
+
+        if ($step < 2) {
+            $APPLICATION->IncludeAdminFile(Loc::getMessage("COMPLEMENTER_UNINSTALL_STEP_1"),  __DIR__ . '/delete1.php');
+        } elseif ($step == 2) {
+
+            if ($request['deleteTables'] == 'Y') {
+                ReferenceManager::getInstance()
+                    ->add(new BrandReference())
+                    ->add(new ModelReference())
+                    ->add(new ProductReference())
+                    ->add(new OptionReference())
+                    ->add(new ProductOptionReference())
+                    ->deleteTables();
+            }
+
+            ModuleManager::unRegisterModule($this->MODULE_ID);
+            Loader::clearModuleCache($this->MODULE_ID);
+
+            $this->UnInstallFiles();
+        }
     }
 
     public function unInstallFiles(): void
     {
         DeleteDirFilesEx('local/components/complementer.catalog');
-    }
-
-    /**
-     * @throws LoaderException
-     */
-    public function unInstallDB(): void
-    {
-        Loader::requireModule($this->MODULE_ID);
-
-        ReferenceManager::getInstance()
-            ->add(new BrandReference())
-            ->add(new ModelReference())
-            ->add(new ProductReference())
-            ->add(new OptionReference())
-            ->add(new ProductOptionReference())
-            ->deleteTables();
-
-        ModuleManager::unRegisterModule($this->MODULE_ID);
-        Loader::clearModuleCache($this->MODULE_ID);
     }
 }
