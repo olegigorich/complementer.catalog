@@ -15,8 +15,7 @@ class Pathway
     function __construct(
         private readonly string $catalogRoot,
         private readonly CatalogCursor $cursor,
-        private readonly ?int $selectionCriteria = null,
-        private readonly ?array $readyProduct = null
+        private readonly ?array $firstItem = null
     ) {
         $this->assemble();
     }
@@ -56,7 +55,7 @@ class Pathway
     {
 
         $this->steps = [];
-        
+
         $path = $this->catalogRoot;
 
         if ($this->cursor === CatalogCursor::Catalog) {
@@ -66,24 +65,15 @@ class Pathway
             $this->add($this->step(CatalogCursor::Catalog, $path, '', 0));
 
             if ($this->cursor === CatalogCursor::Brand) {
-                $current = (new BrandReference())->getItem($this->selectionCriteria);
-                $this->add($this->step(CatalogCursor::Brand, $path, $current['NAME']));
-            } elseif ($this->cursor === CatalogCursor::Model) {
-                $current = (new ModelReference())->getItem($this->selectionCriteria);
-                $this->add(
-                    $this->step(CatalogCursor::Brand, $path, $current['BRAND-NAME'], $current['BRAND-ID'])
-                )->add(
-                    $this->step(CatalogCursor::Model, $path, $current['NAME'])
-                );
-            } elseif ($this->cursor === CatalogCursor::Product) {
-                $current = $this->readyProduct;
-                $this->add(
-                    $this->step(CatalogCursor::Brand, $path, $current['BRAND-NAME'], $current['BRAND-ID'])
-                )->add(
-                    $this->step(CatalogCursor::Model, $path, $current['MODEL-NAME'], $current['MODEL-ID'])
-                )->add(
-                    $this->step(CatalogCursor::Product, $path, $current['NAME'])
-                );
+                $this->add($this->step(CatalogCursor::Brand, $path, $this->firstItem['BRAND-NAME']));
+            } else {
+                $this->add($this->step(CatalogCursor::Brand, $path, $this->firstItem['BRAND-NAME'], $this->firstItem['BRAND-ID']));
+                if ($this->cursor === CatalogCursor::Model) {
+                    $this->add($this->step(CatalogCursor::Model, $path, $this->firstItem['NAME']));
+                } else {
+                    $this->add($this->step(CatalogCursor::Model, $path, $this->firstItem['MODEL-NAME'], $this->firstItem['MODEL-ID']))
+                        ->add($this->step(CatalogCursor::Product, $path, $this->firstItem['NAME']));
+                }
             }
         }
     }

@@ -78,6 +78,7 @@ class ProductReference extends Reference
             'filter' => $filter,
             'select' => [
                 '*',
+                'BRAND-' => 'MODEL.BRAND',
                 'MODEL-' => 'MODEL'
             ],
             'offset' => $nav->getOffset(),

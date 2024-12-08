@@ -88,12 +88,13 @@ final class CatalogDetailComponent extends CBitrixComponent implements Controlle
         }
         $this->instance = $instance;
 
-        $this->instance['NAME'] = $this->cursor->title() . ' ' . $this->instance['NAME'];
+        $this->instance['NAME'] = $this->instance['NAME'];
 
-        $pathway = new Pathway($this->arParams['CATALOG_ROOT'], $this->cursor, $this->selectionCriteria, $this->instance);
+        $pathway = new Pathway($this->arParams['CATALOG_ROOT'], $this->cursor, $this->instance);
 
         $this->arResult = [
             'instance' => $this->instance,
+            'productTitle' => $this->cursor->title(),
             'pathway' => $pathway
         ];
 
