@@ -15,7 +15,7 @@ Extension::load([
     'ui.sidepanel.layout',
     'ui.sidepanel-content',
     'ui.layout-form',
-	'ui.fonts.ruble',
+    'ui.fonts.ruble',
 ]);
 
 Loc::loadLanguageFile('/local/modules/complementer.catalog/lib/catalogcursor.php');

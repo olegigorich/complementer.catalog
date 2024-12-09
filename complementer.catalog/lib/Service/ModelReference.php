@@ -8,6 +8,9 @@ use Bitrix\Main\UI\PageNavigation;
 use CComponentEngine;
 use Exception;
 
+/**
+ * Справочник Модели
+ */
 class ModelReference extends Reference
 {
 
@@ -20,6 +23,11 @@ class ModelReference extends Reference
         );
     }
 
+    /**
+     *
+     * @return mixed
+     * 
+     */
     public function entity(): mixed
     {
         return ModelTable::getEntity();
@@ -30,6 +38,13 @@ class ModelReference extends Reference
         return ModelTable::query()->setFilter($filter)->queryCountTotal();
     }
 
+    /**
+     *
+     * @param int|null $id
+     * 
+     * @return array|null
+     * 
+     */
     public function getItem(?int $id): ?array
     {
         try {
@@ -48,6 +63,15 @@ class ModelReference extends Reference
         return null;
     }
     
+    /**
+     *
+     * @param PageNavigation $nav
+     * @param array $order
+     * @param array $filter
+     * 
+     * @return array
+     * 
+     */
     public function getItems(PageNavigation $nav, array $order = [], array $filter = []): array
     {
         $result = ModelTable::getList([
@@ -72,6 +96,14 @@ class ModelReference extends Reference
         return $items;
     }
 
+    /**
+     *
+     * @param array $item
+     * @param string $urlTemplate
+     * 
+     * @return string
+     * 
+     */
     public function itemLink(
         array $item,
         string $urlTemplate

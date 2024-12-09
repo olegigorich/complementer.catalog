@@ -8,6 +8,9 @@ use Bitrix\Main\UI\PageNavigation;
 use CComponentEngine;
 use Exception;
 
+/**
+ * Справочник Бренды
+ */
 class BrandReference extends Reference
 {
     public function __construct()
@@ -18,17 +21,36 @@ class BrandReference extends Reference
         );
     }
 
+    /**
+     *
+     * @return mixed
+     * 
+     */
     public function entity(): mixed
     {
         return BrandTable::getEntity();
     }
 
+    /**
+     *
+     * @param array $filter
+     * 
+     * @return int
+     * 
+     */
     public function count(array $filter = []): int
     {
         return BrandTable::query()->setFilter($filter)->queryCountTotal();
     }
 
     
+    /**
+     *
+     * @param int|null $id
+     * 
+     * @return array|null
+     * 
+     */
     public function getItem(?int $id): ?array
     {
         try {
@@ -47,6 +69,15 @@ class BrandReference extends Reference
     }
     
 
+    /**
+     *
+     * @param PageNavigation $nav
+     * @param array $order
+     * @param array $filter
+     * 
+     * @return array
+     * 
+     */
     public function getItems(PageNavigation $nav, array $order = [], array $filter = []): array
     {
         $result = BrandTable::getList([
@@ -71,6 +102,14 @@ class BrandReference extends Reference
         return $items;
     }
 
+    /**
+    *
+     * @param array $item
+     * @param string $urlTemplate
+     * 
+     * @return string
+     * 
+     */
     public function itemLink(
         array $item,
         string $urlTemplate

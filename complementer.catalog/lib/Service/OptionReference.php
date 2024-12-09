@@ -4,6 +4,9 @@ namespace Complementer\Catalog\Service;
 
 use Complementer\Catalog\ORM\Data\OptionTable;
 
+/**
+ * Справочник Опции
+ */
 class OptionReference extends Reference
 {
 

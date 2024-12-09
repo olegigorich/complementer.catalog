@@ -3,8 +3,6 @@
 use Complementer\Catalog\Service\Reference;
 use Complementer\Catalog\Service\CatalogCursor;
 use Complementer\Catalog\Service\ReferenceManager;
-use Complementer\Catalog\Service\BrandReference;
-use Complementer\Catalog\Service\ModelReference;
 use Complementer\Catalog\UI\Pathway;
 
 use Bitrix\Main\Error as BitrixError;
@@ -13,8 +11,6 @@ use Bitrix\Main\ErrorableImplementation;
 use Bitrix\Main\ErrorCollection;
 use Bitrix\Main\Loader;
 use Bitrix\Main\UI\PageNavigation;
-use Bitrix\UI\Buttons\CreateButton;
-use Bitrix\Main\Application;
 
 use Bitrix\Main\Grid\Options as GridService;
 use Bitrix\Main\Engine\Contract\Controllerable;
@@ -23,6 +19,9 @@ use Bitrix\Main\Localization\Loc;
 
 defined('B_PROLOG_INCLUDED') || die;
 
+/**
+ * Компонент списка Каталога
+ */
 class CatalogListComponent extends CBitrixComponent implements Errorable, Controllerable
 {
     use ErrorableImplementation;
@@ -37,6 +36,12 @@ class CatalogListComponent extends CBitrixComponent implements Errorable, Contro
     private ?string $gridId;
     private ?string $navId;
 
+    /**
+     *
+     * @param CBitrixComponent|null $component
+     * @param mixed 
+     * 
+     */
     public function __construct(
         ?CBitrixComponent $component = null,
     ) {
@@ -49,6 +54,13 @@ class CatalogListComponent extends CBitrixComponent implements Errorable, Contro
         $this->errorCollection = new ErrorCollection();
     }
 
+    /**
+     *
+     * @param mixed $arParams
+     * 
+     * @return array
+     * 
+     */
     public function onPrepareComponentParams($arParams): array
     {
         if (!isset($arParams['CURSOR'])) {
@@ -97,6 +109,11 @@ class CatalogListComponent extends CBitrixComponent implements Errorable, Contro
         return $arParams;
     }
 
+    /**
+     *
+     * @return void
+     * 
+     */
     public function executeComponent(): void
     {
 
@@ -185,6 +202,11 @@ class CatalogListComponent extends CBitrixComponent implements Errorable, Contro
         $this->includeComponentTemplate();
     }
 
+    /**
+     *
+     * @return void
+     * 
+     */
     private function displayErrors(): void
     {
         foreach ($this->getErrors() as $error) {
@@ -193,6 +215,11 @@ class CatalogListComponent extends CBitrixComponent implements Errorable, Contro
         }
     }
 
+    /**
+     *
+     * @return array
+     * 
+     */
     public function configureActions(): array
     {
         return [];

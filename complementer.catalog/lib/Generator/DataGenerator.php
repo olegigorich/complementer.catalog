@@ -2,6 +2,9 @@
 
 namespace Complementer\Catalog\Generator;
 
+/**
+ * Генератор демо-данных Каталога
+ */
 class DataGenerator
 {
     private const CONSONANT = [
@@ -26,11 +29,23 @@ class DataGenerator
        'DRY-салфетки для экрана'
     ];
 
+    /**
+     *
+     * @param array $letters
+     * 
+     * @return string
+     * 
+     */
     public static function letter(array $letters): string
     {
         return $letters[array_rand($letters)];
     }
 
+    /**
+     *
+     * @return string
+     * 
+     */
     public static function get2PartName(): string
     {
         return self::mbFirst(self::letter(self::CONSONANT)) .
@@ -40,6 +55,11 @@ class DataGenerator
             self::letter(self::CONSONANT);
     }
 
+    /**
+     *
+     * @return string
+     * 
+     */
     public static function get3PartName(): string
     {
         return self::get2PartName() .
@@ -47,6 +67,13 @@ class DataGenerator
             self::letter(self::CONSONANT);
     }
 
+    /**
+     *
+     * @param int $number
+     * 
+     * @return string
+     * 
+     */
     public static function getProductSpecific(int $number): string
     {
         return self::mbFirst(self::letter(self::CONSONANT)).
@@ -56,6 +83,13 @@ class DataGenerator
             $number;
     }
 
+    /**
+     *
+     * @param string $str
+     * 
+     * @return string
+     * 
+     */
     public static function mbFirst(string $str): string
     {
         return mb_strtoupper(mb_substr($str, 0, 1));

@@ -3,15 +3,22 @@
 namespace Complementer\Catalog\UI;
 
 use Complementer\Catalog\Service\CatalogCursor;
-use Complementer\Catalog\Service\BrandReference;
-use Complementer\Catalog\Service\ModelReference;
-
 use Bitrix\UI\Buttons\CreateButton;
 
+/**
+ * Формирует навигацию по Каталогу
+ */
 class Pathway
 {
     private array $steps = [];
 
+    /**
+     *
+     * @param private readonly
+     * @param private readonly
+     * @param mixed private
+     * 
+     */
     function __construct(
         private readonly string $catalogRoot,
         private readonly CatalogCursor $cursor,
@@ -20,17 +27,39 @@ class Pathway
         $this->assemble();
     }
 
+    /**
+     *
+     * @param CreateButton $step
+     * 
+     * @return static
+     * 
+     */
     public function add(CreateButton $step): static
     {
         $this->steps[] = $step;
         return $this;
     }
 
+    /**
+     *
+     * @return string
+     * 
+     */
     public function render(): string
     {
         return implode(array_map(fn (CreateButton $step) => $step?->render(), $this->steps)) ?: '';
     }
 
+    /**
+     *
+     * @param CatalogCursor $cursor
+     * @param string $path
+     * @param string $name
+     * @param int|null $id
+     * 
+     * @return CreateButton
+     * 
+     */
     public function step(CatalogCursor $cursor, string &$path, string $name, ?int $id = null): CreateButton
     {
         $classList = ['ui-btn-link'];
@@ -51,9 +80,11 @@ class Pathway
         )->addAttribute('target', '_top');
     }
 
-    public function assemble()
+    /**
+     * @return void
+     */
+    public function assemble(): void
     {
-
         $this->steps = [];
 
         $path = $this->catalogRoot;

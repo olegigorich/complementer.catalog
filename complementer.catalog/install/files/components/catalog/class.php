@@ -12,6 +12,9 @@ use Bitrix\Main\Loader;
 
 defined('B_PROLOG_INCLUDED') || die;
 
+/**
+ * Комплексный компонент Каталога
+ */
 class CatalogComponent extends CBitrixComponent implements Errorable
 {
     use ErrorableImplementation;
@@ -20,6 +23,12 @@ class CatalogComponent extends CBitrixComponent implements Errorable
     private array $urlTemplates;
     private CComponentEngine $engine;
 
+    /**
+     * 
+     * @param CBitrixComponent|null $component
+     * @param CComponentEngine|null $engine
+     * 
+     */
     public function __construct(?CBitrixComponent $component = null, ?CComponentEngine $engine = null)
     {
         parent::__construct($component);
@@ -31,6 +40,13 @@ class CatalogComponent extends CBitrixComponent implements Errorable
         $this->errorCollection = new ErrorCollection();
     }
 
+    /** 
+     *
+     * @param mixed $arParams
+     * 
+     * @return array
+     * 
+     */
     public function onPrepareComponentParams($arParams): array
     {
         if (!isset($arParams['SEF_MODE']) || $arParams['SEF_MODE'] === 'N') {
@@ -51,6 +67,11 @@ class CatalogComponent extends CBitrixComponent implements Errorable
         return $arParams;
     }
 
+    /**
+     *
+     * @return [type]
+     * 
+     */
     public function executeComponent()
     {
 

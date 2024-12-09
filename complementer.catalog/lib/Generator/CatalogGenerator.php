@@ -14,6 +14,9 @@ use Exception;
 
 Loc::loadLanguageFile(__FILE__);
 
+/**
+ * Генерирует тестовые данные
+ */
 class CatalogGenerator
 {
     public const YEAR_FROM = 2020;
@@ -21,6 +24,15 @@ class CatalogGenerator
     public const PRICE_MIN = 50000;
     public const PRICE_MAX = 150000;
 
+    /**
+     *
+     * @param CatalogCursor $level
+     * @param string $ownerName
+     * @param int $number
+     * 
+     * @return string
+     * 
+     */
     public static function doName(CatalogCursor $level, string $ownerName = '', int $number = 0): string
     {
         $name = match ($level) {
@@ -32,6 +44,11 @@ class CatalogGenerator
         return $name;
     }
 
+    /**
+     *
+     * @return void
+     * 
+     */
     public static function fillOptionTable(): void
     {
         foreach (DataGenerator::PRODUCT_OPTIONS as $name) {
@@ -49,6 +66,15 @@ class CatalogGenerator
         }
     }
 
+    /**
+     *
+     * @param int $modelId
+     * @param string $modelName
+     * @param int $count
+     * 
+     * @return void
+     * 
+     */
     public static function fillProductTable(
         int $modelId,
         string $modelName,
@@ -73,6 +99,11 @@ class CatalogGenerator
         }
     }
 
+    /**
+     *
+     * @return void
+     * 
+     */
     public static function fillProductOptionTable(): void
     {
         $products = ProductTable::getList([
@@ -108,6 +139,16 @@ class CatalogGenerator
         }
     }
 
+    /**
+     *
+     * @param int $brandId
+     * @param string $brandName
+     * @param int $count
+     * @param int $countProducts
+     * 
+     * @return void
+     * 
+     */
     public static function fillModelTable(
         int $brandId,
         string $brandName,
@@ -133,6 +174,15 @@ class CatalogGenerator
         }
     }
 
+    /**
+     *
+     * @param int $countBrands
+     * @param int $countModels
+     * @param  int
+     * 
+     * @return void
+     * 
+     */
     public static function fillCatalog(
         int $countBrands,
         int $countModels = 0,

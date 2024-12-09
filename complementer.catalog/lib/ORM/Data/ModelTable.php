@@ -8,6 +8,9 @@ use Bitrix\Main\ORM\Fields\StringField;
 use Bitrix\Main\ORM\Fields\Relations\Reference;
 use Bitrix\Main\Entity\Query\Join;
 
+/**
+ * ORM таблица Модели
+ */
 final class ModelTable extends DataManager
 {
     public static function getTableName(): string
@@ -21,9 +24,9 @@ final class ModelTable extends DataManager
             (new IntegerField('ID'))->configurePrimary()->configureAutocomplete(),
             (new StringField('NAME'))->configureRequired(),
             (new IntegerField('BRAND_ID')),
-			(new Reference('BRAND', BrandTable::class,
-				Join::on('this.BRAND_ID', 'ref.ID')))
-				->configureJoinType('inner')
+            (new Reference('BRAND', BrandTable::class,
+                Join::on('this.BRAND_ID', 'ref.ID')))
+                ->configureJoinType('inner')
         ];
     }
 }

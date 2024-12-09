@@ -7,6 +7,9 @@ use Bitrix\Main\ORM\Fields\IntegerField;
 use Bitrix\Main\ORM\Fields\Relations\Reference;
 use Bitrix\Main\Entity\Query\Join;
 
+/**
+ * ORM таблица Продукты-Опции
+ */
 class ProductOptionTable extends DataManager
 {
     public static function getTableName(): string
@@ -22,14 +25,14 @@ class ProductOptionTable extends DataManager
             (new Reference(
                 'PRODUCT',
                 ProductTable::class,
-				Join::on('this.PRODUCT_ID', 'ref.ID')))
-				->configureJoinType('inner'),
+                Join::on('this.PRODUCT_ID', 'ref.ID')))
+                ->configureJoinType('inner'),
             (new IntegerField('OPTION_ID')),
             (new Reference(
                 'OPTION',
                 OptionTable::class,
-				Join::on('this.OPTION_ID', 'ref.ID')))
-				->configureJoinType('inner')
+                Join::on('this.OPTION_ID', 'ref.ID')))
+                ->configureJoinType('inner')
             ];
     }
 }

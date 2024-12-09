@@ -6,6 +6,9 @@ use Bitrix\Main\ORM\Data\DataManager;
 use Bitrix\Main\ORM\Fields\IntegerField;
 use Bitrix\Main\ORM\Fields\StringField;
 
+/**
+ * ORM таблица Опции
+ */
 class OptionTable extends DataManager
 {
     public static function getTableName(): string

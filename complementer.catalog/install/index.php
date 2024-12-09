@@ -17,9 +17,22 @@ use Bitrix\Main\Application;
 
 defined('B_PROLOG_INCLUDED') || die;
 
+/**
+ * Модуль Дополнитель.Каталог
+ */
 final class complementer_catalog extends CModule
 {
 
+    /**
+     *
+     * @param mixed public
+     * @param mixed public
+     * @param mixed public
+     * @param mixed public
+     * @param mixed public
+     * @param mixed public
+     * 
+     */
     public function __construct(
         public readonly int $defCountBrands = 2,
         public readonly int $defCountModels = 2,
@@ -40,9 +53,13 @@ final class complementer_catalog extends CModule
     }
 
     /**
+     *
+     * @return bool
+     * 
      * @throws LoaderException
+     * 
      */
-    public function doInstall(): void
+    public function doInstall(): bool
     {
         global $APPLICATION;
 
@@ -81,9 +98,16 @@ final class complementer_catalog extends CModule
             }
 
             $this->installFiles();
+            
+            return true;
         }
     }
 
+    /**
+     *
+     * @return void
+     * 
+     */
     public function installFiles(): void
     {
         CopyDirFiles(
@@ -95,9 +119,12 @@ final class complementer_catalog extends CModule
     }
 
     /**
+     *
+     * @return bool
+     * 
      * @throws LoaderException
      */
-    public function doUninstall(): void
+    public function doUninstall(): bool
     {
         global $APPLICATION;
         Loader::requireModule($this->MODULE_ID);
@@ -123,9 +150,16 @@ final class complementer_catalog extends CModule
             Loader::clearModuleCache($this->MODULE_ID);
 
             $this->UnInstallFiles();
+
+            return true;
         }
     }
 
+    /**
+     *
+     * @return void
+     * 
+     */
     public function unInstallFiles(): void
     {
         DeleteDirFilesEx('local/components/complementer.catalog');

@@ -10,6 +10,9 @@ use Bitrix\Main\UI\PageNavigation;
 use CComponentEngine;
 use Exception;
 
+/**
+ * Справочник Продукты
+ */
 class ProductReference extends Reference
 {
 
@@ -25,16 +28,35 @@ class ProductReference extends Reference
         Loc::loadLanguageFile(__FILE__);
     }
 
+    /**
+     *
+     * @return mixed
+     * 
+     */
     public function entity(): mixed
     {
         return ProductTable::getEntity();
     }
 
+    /**
+     *
+     * @param array $filter
+     * 
+     * @return int
+     * 
+     */
     public function count(array $filter = []): int
     {
         return ProductTable::query()->setFilter($filter)->queryCountTotal();
     }
     
+    /**
+     *
+     * @param int|null $id
+     * 
+     * @return array|null
+     * 
+     */
     public function getItem(?int $id): ?array
     {
         try {
@@ -71,6 +93,15 @@ class ProductReference extends Reference
         return null;
     }
 
+    /**
+     *
+     * @param PageNavigation $nav
+     * @param array $order
+     * @param array $filter
+     * 
+     * @return array
+     * 
+     */
     public function getItems(PageNavigation $nav, array $order = [], array $filter = []): array
     {
         $result = ProductTable::getList([
@@ -96,6 +127,14 @@ class ProductReference extends Reference
         return $items;
     }
 
+    /**
+     *
+     * @param array $item
+     * @param string $urlTemplate
+     * 
+     * @return string
+     * 
+     */
     public function itemLink(
         array $item,
         string $urlTemplate
@@ -112,6 +151,11 @@ class ProductReference extends Reference
         );
     }
 
+    /**
+     *
+     * @return array
+     * 
+     */
     public function getDefaultFieldIDs(): array
     {
         return [
@@ -121,6 +165,11 @@ class ProductReference extends Reference
         ];
     }    
 
+    /**
+     *
+     * @return array
+     * 
+     */
     public function getListColumns(): array
     {
         return [
@@ -130,6 +179,15 @@ class ProductReference extends Reference
         ];
     } 
  
+    /**
+     *
+     * @param array $item
+     * @param string $urlTemplate
+     * @param array $visibleColumns
+     * 
+     * @return array
+     * 
+     */
     public function prepareItemRow(array $item, string $urlTemplate, array $visibleColumns): array
     {
         $row = [];
@@ -143,5 +201,4 @@ class ProductReference extends Reference
         }
         return $row;
     }
-
 }

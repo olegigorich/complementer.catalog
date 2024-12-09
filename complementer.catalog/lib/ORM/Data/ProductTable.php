@@ -9,6 +9,9 @@ use Bitrix\Main\ORM\Fields\FloatField;
 use Bitrix\Main\ORM\Fields\Relations\Reference;
 use Bitrix\Main\Entity\Query\Join;
 
+/**
+ * ORM таблица Продукты
+ */
 class ProductTable extends DataManager
 {
     public static function getTableName(): string
@@ -24,9 +27,9 @@ class ProductTable extends DataManager
             (new IntegerField('YEAR'))->configureRequired(),
             (new FloatField('PRICE'))->configureRequired(),
             (new IntegerField('MODEL_ID')),
-			(new Reference('MODEL', ModelTable::class,
-				Join::on('this.MODEL_ID', 'ref.ID')))
-				->configureJoinType('inner')
+            (new Reference('MODEL', ModelTable::class,
+                Join::on('this.MODEL_ID', 'ref.ID')))
+                ->configureJoinType('inner')
         ];
     }
 }

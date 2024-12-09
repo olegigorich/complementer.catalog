@@ -13,10 +13,15 @@ enum CatalogCursor : string
     CASE Option = 'option';
     CASE ProductOption = 'product_option';
 
+    /**
+     *
+     * @return string
+     * 
+     */
     public function title(): string 
     {
         Loc::loadLanguageFile(__FILE__);
         return  Loc::getMessage('NAMED_'.mb_strtoupper($this->name));
-	}
+    }
 
 }

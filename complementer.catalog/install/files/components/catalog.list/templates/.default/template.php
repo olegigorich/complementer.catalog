@@ -1,7 +1,6 @@
 <?php
 
 use Bitrix\Main\Localization\Loc;
-use Bitrix\UI\Toolbar\Manager;
 use Bitrix\UI\Toolbar\Facade\Toolbar;
 
 defined('B_PROLOG_INCLUDED') || die;
@@ -25,5 +24,3 @@ $APPLICATION->IncludeComponent(
     '.default',
     $arResult['grid']
 );
-
-    

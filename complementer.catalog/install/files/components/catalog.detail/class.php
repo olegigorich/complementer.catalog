@@ -13,6 +13,9 @@ use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Engine\Contract\Controllerable;
 
+/**
+ * Компонент детальной страницы каталога
+ */
 final class CatalogDetailComponent extends CBitrixComponent implements Controllerable, Errorable
 {
     use ErrorableImplementation;
@@ -22,6 +25,11 @@ final class CatalogDetailComponent extends CBitrixComponent implements Controlle
     private ?int $selectionCriteria = null;
     private ?array $instance = null;
 
+    /**
+     *
+     * @param CBitrixComponent|null $component
+     * 
+     */
     public function __construct(?CBitrixComponent $component = null)
     {
         parent::__construct($component);
@@ -29,6 +37,12 @@ final class CatalogDetailComponent extends CBitrixComponent implements Controlle
         $this->errorCollection = new ErrorCollection();
     }
 
+    /**
+     * @param mixed $arParams
+     * 
+     * @return array
+     * 
+     */
     public function onPrepareComponentParams($arParams): array
     {
         if (!isset($arParams['CURSOR'])) {
@@ -68,6 +82,11 @@ final class CatalogDetailComponent extends CBitrixComponent implements Controlle
         return $arParams;
     }
 
+    /**
+     *
+     * @return void
+     * 
+     */
     public function executeComponent(): void
     {
         if ($this->hasErrors()) {
@@ -101,6 +120,11 @@ final class CatalogDetailComponent extends CBitrixComponent implements Controlle
         $this->includeComponentTemplate();
     }
 
+    /**
+     *
+     * @return void
+     * 
+     */
     private function displayErrors(): void
     {
         foreach ($this->getErrors() as $error) {
