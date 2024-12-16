@@ -76,12 +76,7 @@ final class complementer_catalog extends CModule
             ModuleManager::registerModule($this->MODULE_ID);
             Loader::requireModule($this->MODULE_ID);
 
-            $refMan = ReferenceManager::getInstance();
-            $refMan->add(new BrandReference())
-                ->add(new ModelReference())
-                ->add(new ProductReference())
-                ->add(new OptionReference())
-                ->add(new ProductOptionReference());
+            $refMan = ReferenceManager::getInstance()->complete();
 
             if ($request['createTables'] == 'Y') {
                 $refMan->deleteTables();
@@ -137,13 +132,7 @@ final class complementer_catalog extends CModule
         } elseif ($step == 2) {
 
             if ($request['deleteTables'] == 'Y') {
-                ReferenceManager::getInstance()
-                    ->add(new BrandReference())
-                    ->add(new ModelReference())
-                    ->add(new ProductReference())
-                    ->add(new OptionReference())
-                    ->add(new ProductOptionReference())
-                    ->deleteTables();
+                ReferenceManager::getInstance()->complete()->deleteTables();
             }
 
             ModuleManager::unRegisterModule($this->MODULE_ID);

@@ -4,9 +4,7 @@ namespace Complementer\Catalog\Service;
 
 use Complementer\Catalog\ORM\Data\BrandTable;
 
-use Bitrix\Main\UI\PageNavigation;
 use CComponentEngine;
-use Exception;
 
 /**
  * Справочник Бренды
@@ -23,83 +21,12 @@ class BrandReference extends Reference
 
     /**
      *
-     * @return mixed
+     * @return string
      * 
      */
-    public function entity(): mixed
+    public function getTableClass(): string
     {
-        return BrandTable::getEntity();
-    }
-
-    /**
-     *
-     * @param array $filter
-     * 
-     * @return int
-     * 
-     */
-    public function count(array $filter = []): int
-    {
-        return BrandTable::query()->setFilter($filter)->queryCountTotal();
-    }
-
-    
-    /**
-     *
-     * @param int|null $id
-     * 
-     * @return array|null
-     * 
-     */
-    public function getItem(?int $id): ?array
-    {
-        try {
-            $result = BrandTable::getByPrimary($id, [
-                'select' => [
-                    '*'
-                ]
-            ]);
-            $item = $result->fetch();
-
-            return $item;
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
-        }
-        return null;
-    }
-    
-
-    /**
-     *
-     * @param PageNavigation $nav
-     * @param array $order
-     * @param array $filter
-     * 
-     * @return array
-     * 
-     */
-    public function getItems(PageNavigation $nav, array $order = [], array $filter = []): array
-    {
-        $result = BrandTable::getList([
-            'order' => $order,
-            'filter' => $filter,
-            'select' => [
-                'ID',
-                'NAME'
-            ],
-            'offset' => $nav->getOffset(),
-            'limit' => $nav->getLimit(),
-            'count_total' => true,
-        ]);
-
-        $items = [];
-        while ($item = $result->fetch()) {
-            $items[$item['ID']] = $item;
-        }
-
-        $nav->setRecordCount($result->getCount());
-
-        return $items;
+        return BrandTable::class;
     }
 
     /**

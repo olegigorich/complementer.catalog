@@ -60,4 +60,19 @@ class ReferenceManager extends Singleton
             default => null
         };
     }
+
+    /**
+     *
+     * @return static
+     * 
+     */
+    public function complete(): static
+    {
+        $this->add(new BrandReference())
+            ->add(new ModelReference())
+            ->add(new ProductReference())
+            ->add(new OptionReference())
+            ->add(new ProductOptionReference());
+        return $this;
+    }
 }

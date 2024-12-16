@@ -6,9 +6,7 @@ use Complementer\Catalog\ORM\Data\ProductTable;
 use Complementer\Catalog\ORM\Data\ProductOptionTable;
 
 use Bitrix\Main\Localization\Loc;
-use Bitrix\Main\UI\PageNavigation;
 use CComponentEngine;
-use Exception;
 
 /**
  * Справочник Продукты
@@ -30,101 +28,51 @@ class ProductReference extends Reference
 
     /**
      *
-     * @return mixed
-     * 
-     */
-    public function entity(): mixed
-    {
-        return ProductTable::getEntity();
-    }
-
-    /**
-     *
-     * @param array $filter
-     * 
-     * @return int
-     * 
-     */
-    public function count(array $filter = []): int
-    {
-        return ProductTable::query()->setFilter($filter)->queryCountTotal();
-    }
-    
-    /**
-     *
-     * @param int|null $id
-     * 
-     * @return array|null
-     * 
-     */
-    public function getItem(?int $id): ?array
-    {
-        try {
-
-            $result = ProductTable::getByPrimary($id, [
-                'select' => [
-                    '*',
-                    'MODEL-' => 'MODEL',
-                    'BRAND-' => 'MODEL.BRAND'
-                ]
-            ]);
-            $item = $result->fetch();
-
-            if (!empty($item)) {
-                $result = ProductOptionTable::getList([
-                    'select'  => [
-                        'OPTION-NAME' => 'OPTION.NAME',
-                    ],
-                    'filter' => [
-                        'PRODUCT_ID' => $id
-                    ],
-                    'data_doubling' => false
-                ]);
-                $item['OPTIONS'] = $result->fetchAll() ?: [];
-                return $item;
-            } else {
-                return [];
-            }
-
-            return $item;
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
-        }
-        return null;
-    }
-
-    /**
-     *
-     * @param PageNavigation $nav
-     * @param array $order
-     * @param array $filter
+     * @param array $item
      * 
      * @return array
      * 
      */
-    public function getItems(PageNavigation $nav, array $order = [], array $filter = []): array
+    public function completeItem(array $item): array
     {
-        $result = ProductTable::getList([
-            'order' => $order,
-            'filter' => $filter,
-            'select' => [
-                '*',
-                'BRAND-' => 'MODEL.BRAND',
-                'MODEL-' => 'MODEL'
-            ],
-            'offset' => $nav->getOffset(),
-            'limit' => $nav->getLimit(),
-            'count_total' => true,
-        ]);
-
-        $items = [];
-        while ($item = $result->fetch()) {
-            $items[$item['ID']] = $item;
+        if (!empty($item)) {
+            $result = ProductOptionTable::getList([
+                'select'  => [
+                    'OPTION-NAME' => 'OPTION.NAME',
+                ],
+                'filter' => [
+                    'PRODUCT_ID' =>  $item['ID']
+                ],
+                'data_doubling' => false
+            ]);
+            $item['OPTIONS'] = $result->fetchAll() ?: [];
+            return $item;
+        } else {
+            return [];
         }
+    }
 
-        $nav->setRecordCount($result->getCount());
+    /**
+     *
+     * @return string
+     * 
+     */
+    public function getTableClass(): string
+    {
+        return ProductTable::class;
+    }
 
-        return $items;
+    /**
+     *
+     * @return array
+     * 
+     */
+    public function getSpecificFields(): array
+    {
+        return  [
+            'BRAND-' => 'MODEL.BRAND',
+            'MODEL-' => 'MODEL'
+        ];
     }
 
     /**
@@ -159,11 +107,11 @@ class ProductReference extends Reference
     public function getDefaultFieldIDs(): array
     {
         return [
-            ... parent::getDefaultFieldIDs(),
+            ...parent::getDefaultFieldIDs(),
             'YEAR',
             'PRICE'
         ];
-    }    
+    }
 
     /**
      *
@@ -173,12 +121,12 @@ class ProductReference extends Reference
     public function getListColumns(): array
     {
         return [
-            ... parent::getListColumns(),
+            ...parent::getListColumns(),
             ['id' => 'YEAR', 'name' => Loc::getMessage('NAMED_YEAR'), 'sort' => 'YEAR', 'default' => true],
             ['id' => 'PRICE', 'name' => Loc::getMessage('NAMED_PRICE'), 'sort' => 'PRICE', 'default' => true],
         ];
-    } 
- 
+    }
+
     /**
      *
      * @param array $item
