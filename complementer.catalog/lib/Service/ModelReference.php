@@ -4,9 +4,7 @@ namespace Complementer\Catalog\Service;
 
 use Complementer\Catalog\ORM\Data\ModelTable;
 
-use Bitrix\Main\UI\PageNavigation;
 use CComponentEngine;
-use Exception;
 
 /**
  * Справочник Модели
@@ -25,75 +23,24 @@ class ModelReference extends Reference
 
     /**
      *
-     * @return mixed
+     * @return string
      * 
      */
-    public function entity(): mixed
+    public function getTableClass(): string
     {
-        return ModelTable::getEntity();
-    }
-
-    public function count(array $filter = []): int
-    {
-        return ModelTable::query()->setFilter($filter)->queryCountTotal();
+        return ModelTable::class;
     }
 
     /**
      *
-     * @param int|null $id
-     * 
-     * @return array|null
-     * 
-     */
-    public function getItem(?int $id): ?array
-    {
-        try {
-            $result = ModelTable::getByPrimary($id, [
-                'select' => [
-                    '*',
-                    'BRAND-' => 'BRAND'
-                ]
-            ]);
-            $item = $result->fetch();
-
-            return $item;
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
-        }
-        return null;
-    }
-    
-    /**
-     *
-     * @param PageNavigation $nav
-     * @param array $order
-     * @param array $filter
-     * 
      * @return array
      * 
      */
-    public function getItems(PageNavigation $nav, array $order = [], array $filter = []): array
+    public function getSpecificFields(): array
     {
-        $result = ModelTable::getList([
-            'order' => $order,
-            'filter' => $filter,
-            'select' => [
-                '*',
-                'BRAND-' => 'BRAND'
-            ],
-            'offset' => $nav->getOffset(),
-            'limit' => $nav->getLimit(),
-            'count_total' => true,
-        ]);
-
-        $items = [];
-        while ($item = $result->fetch()) {
-            $items[$item['ID']] = $item;
-        }
-
-        $nav->setRecordCount($result->getCount());
-
-        return $items;
+        return  [
+            'BRAND-' => 'BRAND',
+        ];
     }
 
     /**

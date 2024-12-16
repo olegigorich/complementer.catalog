@@ -33,15 +33,6 @@ abstract class Reference
 
     /**
      *
-     * @return mixed
-     * 
-     */
-    public function entity(): mixed
-    {
-    }
-
-    /**
-     *
      * @return bool
      * 
      */
@@ -59,7 +50,7 @@ abstract class Reference
     {
         try {
             if (!$this->exist()) {
-                $this->entity()->createDbTable();
+                static::getTableClass()::getEntity()->createDbTable();
             }
         } catch (Exception $e) {
             throw new Exception($this->tableName . ' - ' . $e->getMessage());
@@ -73,8 +64,8 @@ abstract class Reference
      */
     public function getFullName(): string
     {
-        return $this->cursor->title().' ('.$this->cursor->name.') ('.$this->tableName.')'; 
-    }    
+        return $this->cursor->title() . ' (' . $this->cursor->name . ') (' . $this->tableName . ')';
+    }
 
     /**
      *
@@ -99,9 +90,9 @@ abstract class Reference
      */
     public function count(array $filter = []): int
     {
-        return 0;
+        return $this->getTableClass()::query()->setFilter($filter)->queryCountTotal();
     }
- 
+
     /**
      *
      * @param int|null $id
@@ -111,7 +102,33 @@ abstract class Reference
      */
     public function getItem(?int $id): ?array
     {
+        try {
+
+            $result = $this->getTableClass()::getByPrimary($id, [
+                'select' => [
+                    '*',
+                    ...$this->getSpecificFields()
+                ]
+            ]);
+            $item = $result->fetch();
+
+            return $this->completeItem($item);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
         return null;
+    }
+
+    /**
+     *
+     * @param array $item
+     * 
+     * @return array
+     * 
+     */
+    public function completeItem(array $item): array
+    {
+        return $item;
     }
 
     /**
@@ -125,7 +142,46 @@ abstract class Reference
      */
     public function getItems(PageNavigation $nav, array $order = [], array $filter = []): array
     {
-        return [];
+        $result = $this->getTableCLass()::getList([
+            'order' => $order,
+            'filter' => $filter,
+            'select' => [
+                '*',
+                ...$this->getSpecificFields()
+            ],
+            'offset' => $nav->getOffset(),
+            'limit' => $nav->getLimit(),
+            'count_total' => true,
+        ]);
+
+        $items = [];
+        while ($item = $result->fetch()) {
+            $items[$item['ID']] = $item;
+        }
+
+        $nav->setRecordCount($result->getCount());
+
+        return $items;
+    }
+
+    /**
+     *
+     * @return string
+     * 
+     */
+    public function getTableClass(): string
+    {
+        return static::class;
+    }
+
+    /**
+     *
+     * @return array
+     * 
+     */
+    public function getSpecificFields(): array
+    {
+        return  [];
     }
 
     /**
@@ -154,7 +210,7 @@ abstract class Reference
             'ID',
             'NAME',
         ];
-    }    
+    }
 
     /**
      *
@@ -188,5 +244,5 @@ abstract class Reference
             };
         }
         return $row;
-    } 
+    }
 }

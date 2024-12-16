@@ -17,9 +17,14 @@ class OptionReference extends Reference
         );
     }
 
-    public function entity(): mixed
+    /**
+     *
+     * @return string
+     * 
+     */
+    public function getTableClass(): string
     {
-        return OptionTable::getEntity();
+        return OptionTable::class;
     }
 
 }
