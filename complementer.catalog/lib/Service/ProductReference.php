@@ -6,7 +6,6 @@ use Complementer\Catalog\ORM\Data\ProductTable;
 use Complementer\Catalog\ORM\Data\ProductOptionTable;
 
 use Bitrix\Main\Localization\Loc;
-use CComponentEngine;
 
 /**
  * Справочник Продукты
@@ -77,30 +76,6 @@ class ProductReference extends Reference
 
     /**
      *
-     * @param array $item
-     * @param string $urlTemplate
-     * 
-     * @return string
-     * 
-     */
-    public function itemLink(
-        array $item,
-        string $urlTemplate
-    ): string {
-        return sprintf(
-            '<a href="%s">' . $this->cursor->title() . ' ' . '%s</a>',
-            CComponentEngine::makePathFromTemplate(
-                $urlTemplate,
-                [
-                    "NOTEBOOK" => $item['ID'],
-                ],
-            ),
-            $item['NAME'],
-        );
-    }
-
-    /**
-     *
      * @return array
      * 
      */
@@ -127,26 +102,12 @@ class ProductReference extends Reference
         ];
     }
 
-    /**
-     *
-     * @param array $item
-     * @param string $urlTemplate
-     * @param array $visibleColumns
-     * 
-     * @return array
-     * 
-     */
-    public function prepareItemRow(array $item, string $urlTemplate, array $visibleColumns): array
+    public function getFieldValue( array $item, string $fieldName): mixed
     {
-        $row = [];
-        foreach ($visibleColumns as $column) {
-            $row[$column] = match ($column) {
-                'ID' => $item['ID'],
-                'NAME' => $this->itemLink($item, $urlTemplate),
-                'YEAR' => $item['YEAR'],
-                'PRICE' => number_format($item['PRICE'], 2, ', ', ' '),
-            };
-        }
-        return $row;
+        return match ($fieldName) {
+            'PRICE' => number_format($item['PRICE'], 2, ', ', ' '),
+            default => parent::getFieldValue($item, $fieldName),
+        };
     }
+
 }
