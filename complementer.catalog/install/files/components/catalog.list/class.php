@@ -163,7 +163,7 @@ class CatalogListComponent extends CBitrixComponent implements Errorable, Contro
             $rows = array_map(
                 fn ($item): array => [
                     'id' => $item['ID'],
-                    'columns' => $this->reference->prepareItemRow($item, $this->arParams['ITEM_PAGE_URL'], $visibleColumns),
+                    'columns' => $this->prepareItemRow($item,  $visibleColumns),
                 ],
                 $items
             );
@@ -200,6 +200,65 @@ class CatalogListComponent extends CBitrixComponent implements Errorable, Contro
         ];
 
         $this->includeComponentTemplate();
+    }
+
+    /**
+     *
+     * @param array $item
+     * @param array $visibleColumns
+     * 
+     * @return array
+     * 
+     */
+    public function prepareItemRow(array $item, array $visibleColumns): array
+    {
+        $row = [];
+        foreach ($visibleColumns as $column) {
+            $row[$column] = $this->reference->getFieldValue($item, $column);
+        }
+        if (isset($row['NAME'])) {
+            $row['NAME'] = $this->itemLink($item);
+        }
+        return $row;
+    }
+
+    /**
+     *
+     * @param array $item
+     * 
+     * @return string
+     * 
+     */
+    public function itemLink(array $item): string
+    {
+        return sprintf(
+            '<a href="%1$s" title="%2$s">%2$s</a>',
+            CComponentEngine::makePathFromTemplate(
+                $this->arParams['ITEM_PAGE_URL'],
+                $this->replaceParams($item),
+            ),
+            $item['NAME']
+        );
+    }
+
+    /**
+     *
+     * @param array $item
+     * 
+     * @return array
+     * 
+     */
+    public function replaceParams(array $item): array
+    {
+        return match ($this->cursor) {
+            CatalogCursor::Catalog => ['BRAND' => $item['ID']],
+            CatalogCursor::Brand => [
+                'MODEL' => $item['ID'],
+                'BRAND' => $item['BRAND-ID'],
+            ],
+            CatalogCursor::Model => ['NOTEBOOK' => $item['ID']],
+            default => []
+        };
     }
 
     /**

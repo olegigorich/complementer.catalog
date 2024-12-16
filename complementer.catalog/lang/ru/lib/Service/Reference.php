@@ -1,3 +1,3 @@
 <?php
 
-$MESS['NAMED_NAME'] = 'Имя';
+$MESS['NAMED_NAME'] = 'Название';

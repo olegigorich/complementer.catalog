@@ -186,21 +186,6 @@ abstract class Reference
 
     /**
      *
-     * @param array $item
-     * @param string $urlTemplate
-     * 
-     * @return string
-     * 
-     */
-    public function itemLink(
-        array $item,
-        string $urlTemplate
-    ): string {
-        return '';
-    }
-
-    /**
-     *
      * @return array
      * 
      */
@@ -221,28 +206,15 @@ abstract class Reference
     {
         return [
             ['id' => 'ID', 'name' => 'ID', 'sort' => 'ID', 'default' => true],
-            ['id' => 'NAME', 'name' => Loc::getMessage('NAMED_NAME'), 'sort' => 'NAME', 'default' => true],
+            ['id' => 'NAME', 'name' => Loc::getMessage('NAMED_NAME').' ('.$this->cursor->title().')', 'sort' => 'NAME', 'default' => true],
         ];
     }
 
-    /**
-     *
-     * @param array $item
-     * @param string $urlTemplate
-     * @param array $visibleColumns
-     * 
-     * @return array
-     * 
-     */
-    public function prepareItemRow(array $item, string $urlTemplate, array $visibleColumns): array
+    public function getFieldValue(array $item, string $fieldName): mixed
     {
-        $row = [];
-        foreach ($visibleColumns as $column) {
-            $row[$column] = match ($column) {
-                'ID' => $item['ID'],
-                'NAME' => $this->itemLink($item, $urlTemplate),
-            };
-        }
-        return $row;
+        return  match ($fieldName) {
+            $fieldName => $item[$fieldName],
+            default => null,
+        };
     }
 }

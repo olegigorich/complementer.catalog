@@ -4,8 +4,6 @@ namespace Complementer\Catalog\Service;
 
 use Complementer\Catalog\ORM\Data\ModelTable;
 
-use CComponentEngine;
-
 /**
  * Справочник Модели
  */
@@ -41,31 +39,6 @@ class ModelReference extends Reference
         return  [
             'BRAND-' => 'BRAND',
         ];
-    }
-
-    /**
-     *
-     * @param array $item
-     * @param string $urlTemplate
-     * 
-     * @return string
-     * 
-     */
-    public function itemLink(
-        array $item,
-        string $urlTemplate
-    ): string {
-        return sprintf(
-            '<a href="%s">' . $this->cursor->title() . ' ' . '%s</a>',
-            CComponentEngine::makePathFromTemplate(
-                $urlTemplate,
-                [
-                    "MODEL" => $item['ID'],
-                    "BRAND" => $item['BRAND-ID'],
-                ],
-            ),
-            $item['NAME'],
-        );
     }
 
 }
