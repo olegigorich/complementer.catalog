@@ -1,11 +1,11 @@
 <?php
 
-use Complementer\Catalog\Reference\ReferencesSet;
-use Complementer\Catalog\Reference\BrandReference;
-use Complementer\Catalog\Reference\ModelReference;
-use Complementer\Catalog\Reference\ProductReference;
-use Complementer\Catalog\Reference\OptionReference;
-use Complementer\Catalog\Reference\ProductOptionReference;
+use Complementer\Catalog\DataReference\ReferencesSet;
+use Complementer\Catalog\DataReference\BrandReference;
+use Complementer\Catalog\DataReference\ModelReference;
+use Complementer\Catalog\DataReference\ProductReference;
+use Complementer\Catalog\DataReference\OptionReference;
+use Complementer\Catalog\DataReference\ProductOptionReference;
 use Complementer\Catalog\Generator\CatalogGenerator;
 
 use Bitrix\Main\IO\Path;
