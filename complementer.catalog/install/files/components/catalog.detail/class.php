@@ -1,7 +1,7 @@
 <?php
 
-use Complementer\Catalog\Reference\Reference;
-use Complementer\Catalog\Reference\CatalogCursor;
+use Complementer\Catalog\DataReference\DataReference;
+use Complementer\Catalog\DataReference\CatalogCursor;
 use Complementer\Catalog\UI\Pathway;
 
 use Bitrix\Main\Error as BitrixError;
@@ -19,7 +19,7 @@ final class CatalogDetailComponent extends CBitrixComponent implements Controlle
 {
     use ErrorableImplementation;
 
-    private ?Reference $reference = null;
+    private ?DataReference $reference = null;
     private ?CatalogCursor $cursor = null;
     private ?int $selectionCriteria = null;
     private ?array $instance = null;

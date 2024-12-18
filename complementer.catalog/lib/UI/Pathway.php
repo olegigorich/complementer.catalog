@@ -2,7 +2,7 @@
 
 namespace Complementer\Catalog\UI;
 
-use Complementer\Catalog\Reference\CatalogCursor;
+use Complementer\Catalog\DataReference\CatalogCursor;
 use Bitrix\UI\Buttons\CreateButton;
 
 /**

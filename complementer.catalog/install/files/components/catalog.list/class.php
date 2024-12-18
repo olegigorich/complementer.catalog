@@ -1,7 +1,7 @@
 <?php
 
-use Complementer\Catalog\Reference\Reference;
-use Complementer\Catalog\Reference\CatalogCursor;
+use Complementer\Catalog\DataReference\DataReference;
+use Complementer\Catalog\DataReference\CatalogCursor;
 use Complementer\Catalog\UI\Pathway;
 
 use Bitrix\Main\Error as BitrixError;
@@ -27,7 +27,7 @@ class CatalogListComponent extends CBitrixComponent implements Errorable, Contro
     private const UI_PREFIX = 'complementer-catalog-list-';
 
     private CComponentEngine $engine;
-    private ?Reference $reference = null;
+    private ?DataReference $reference = null;
     private ?CatalogCursor $cursor = null;
     private ?int $prevSelectionCriteria = null;
     private ?int $selectionCriteria = null;
