@@ -1,6 +1,6 @@
 <?
 
-use Complementer\Catalog\Service\CatalogCursor;
+use Complementer\Catalog\Reference\CatalogCursor;
 
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Error as BitrixError;

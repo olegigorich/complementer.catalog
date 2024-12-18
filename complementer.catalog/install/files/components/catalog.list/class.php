@@ -1,8 +1,7 @@
 <?php
 
-use Complementer\Catalog\Service\Reference;
-use Complementer\Catalog\Service\CatalogCursor;
-use Complementer\Catalog\Service\ReferenceManager;
+use Complementer\Catalog\Reference\Reference;
+use Complementer\Catalog\Reference\CatalogCursor;
 use Complementer\Catalog\UI\Pathway;
 
 use Bitrix\Main\Error as BitrixError;
@@ -15,7 +14,6 @@ use Bitrix\Main\UI\PageNavigation;
 use Bitrix\Main\Grid\Options as GridService;
 use Bitrix\Main\Engine\Contract\Controllerable;
 use Bitrix\Main\Localization\Loc;
-
 
 defined('B_PROLOG_INCLUDED') || die;
 
@@ -73,8 +71,13 @@ class CatalogListComponent extends CBitrixComponent implements Errorable, Contro
         $this->gridId = self::UI_PREFIX . 'grid-' . $this->cursor->name;
         $this->navId = self::UI_PREFIX . 'nav-' . $this->cursor->name;
 
-        $reference = ReferenceManager::pullReference($this->cursor);
-        if (!$reference?->exist()) {
+        $reference = $this->cursor->reference();
+        if ($reference === null) {
+            $this->errorCollection->setError(
+                new BitrixError(Loc::GetMessage('REFERENCE_NOT_DEFINED', ["#cursor#" => $this->cursor->name]))
+            );
+            return $arParams;
+        } elseif (!$reference->exist()) {
             $this->errorCollection->setError(
                 new BitrixError(Loc::GetMessage('REFERENCE_NO_EXIST', ["#reference#" => $reference->getFullName()]))
             );

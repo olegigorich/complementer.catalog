@@ -1,11 +1,11 @@
 <?php
 
-use Complementer\Catalog\Service\ReferenceManager;
-use Complementer\Catalog\Service\BrandReference;
-use Complementer\Catalog\Service\ModelReference;
-use Complementer\Catalog\Service\ProductReference;
-use Complementer\Catalog\Service\OptionReference;
-use Complementer\Catalog\Service\ProductOptionReference;
+use Complementer\Catalog\Reference\ReferencesSet;
+use Complementer\Catalog\Reference\BrandReference;
+use Complementer\Catalog\Reference\ModelReference;
+use Complementer\Catalog\Reference\ProductReference;
+use Complementer\Catalog\Reference\OptionReference;
+use Complementer\Catalog\Reference\ProductOptionReference;
 use Complementer\Catalog\Generator\CatalogGenerator;
 
 use Bitrix\Main\IO\Path;
@@ -22,6 +22,12 @@ defined('B_PROLOG_INCLUDED') || die;
  */
 final class complementer_catalog extends CModule
 {
+    public $MODULE_ID = 'complementer.catalog';
+    public $MODULE_VERSION;
+    public $MODULE_VERSION_DATE;
+    public $MODULE_NAME;
+    public $MODULE_DESCRIPTION;
+    public $references;
 
     /**
      *
@@ -41,7 +47,7 @@ final class complementer_catalog extends CModule
         public readonly int $maxCountModels = 6,
         public readonly int $maxCountProducts = 100
     ) {
-        $this->MODULE_ID = 'complementer.catalog';
+
         $this->MODULE_NAME = Loc::getMessage('COMPLEMENTER_CATALOG_NAME');
         $this->MODULE_DESCRIPTION = Loc::getMessage('COMPLEMENTER_CATALOG_DESCRIPTION');
         $this->PARTNER_NAME = Loc::getMessage('COMPLEMENTER_CATALOG_PARTNER_NAME');
@@ -50,6 +56,14 @@ final class complementer_catalog extends CModule
         $version = include __DIR__ . '/version.php';
         $this->MODULE_VERSION = $version['MODULE_VERSION'];
         $this->MODULE_VERSION_DATE = $version['MODULE_VERSION_DATE'];
+
+        $this->references = [
+            BrandReference::class,
+            ModelReference::class,
+            ProductReference::class,
+            OptionReference::class,
+            ProductOptionReference::class,
+        ];
     }
 
     /**
@@ -76,12 +90,11 @@ final class complementer_catalog extends CModule
             ModuleManager::registerModule($this->MODULE_ID);
             Loader::requireModule($this->MODULE_ID);
 
-            $refMan = ReferenceManager::getInstance()->complete();
+            $refSet = ReferencesSet::getInstance()->complete($this->references);
 
             if ($request['createTables'] == 'Y') {
-                $refMan->deleteTables();
-
-                $refMan->createTables();
+                $refSet->deleteTables();
+                $refSet->createTables();
 
                 $countBrands = max(1, min($request['countBrands'], $this->maxCountBrands));
                 $countModels = max(1, min($request['countModels'], $this->maxCountModels));
@@ -93,7 +106,7 @@ final class complementer_catalog extends CModule
             }
 
             $this->installFiles();
-            
+
             return true;
         }
     }
@@ -132,7 +145,7 @@ final class complementer_catalog extends CModule
         } elseif ($step == 2) {
 
             if ($request['deleteTables'] == 'Y') {
-                ReferenceManager::getInstance()->complete()->deleteTables();
+                ReferencesSet::getInstance()->complete($this->references)->deleteTables();
             }
 
             ModuleManager::unRegisterModule($this->MODULE_ID);
