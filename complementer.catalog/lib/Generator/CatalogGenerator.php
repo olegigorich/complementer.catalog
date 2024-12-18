@@ -7,7 +7,7 @@ use Complementer\Catalog\ORM\Data\ModelTable;
 use Complementer\Catalog\ORM\Data\ProductTable;
 use Complementer\Catalog\ORM\Data\OptionTable;
 use Complementer\Catalog\ORM\Data\ProductOptionTable;
-use Complementer\Catalog\Reference\CatalogCursor;
+use Complementer\Catalog\DataReference\CatalogCursor;
 
 use Bitrix\Main\Localization\Loc;
 use Exception;
